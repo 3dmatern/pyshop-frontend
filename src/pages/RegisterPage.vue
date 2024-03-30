@@ -26,7 +26,7 @@
           lazy-rules
         />
 
-        <div>
+        <div class="flex items-center justify-around">
           <q-btn label="Регистрация" type="submit" color="primary" />
           <q-btn
             label="Сбросить"

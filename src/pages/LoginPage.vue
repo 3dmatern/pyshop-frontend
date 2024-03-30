@@ -31,7 +31,7 @@
           ]"
         />
 
-        <div>
+        <div class="flex items-center justify-around">
           <q-btn label="Войти" type="submit" color="primary" />
           <q-btn
             label="Сбросить"
