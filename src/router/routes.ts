@@ -1,8 +1,9 @@
 import { RouteRecordRaw } from 'vue-router';
 
-import ProfilePage from 'pages/ProfilePage.vue';
-import LoginPage from 'src/pages/LoginPage.vue';
 import RegisterPage from 'src/pages/RegisterPage.vue';
+import LoginPage from 'src/pages/LoginPage.vue';
+import ProfilePage from 'pages/ProfilePage.vue';
+import ProfileEditPage from 'src/pages/ProfileEditPage.vue';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -11,11 +12,12 @@ const routes: RouteRecordRaw[] = [
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
       {
-        path: 'profile',
-        component: ProfilePage, // Синтаксис загрузки при небольшом приложении
+        path: 'register',
+        component: RegisterPage, // Синтаксис загрузки при небольшом приложении
       },
       { path: 'login', component: LoginPage },
-      { path: 'register', component: RegisterPage },
+      { path: 'profile', component: ProfilePage },
+      { path: 'profile/edit', component: ProfileEditPage },
     ],
   },
 

@@ -1,65 +1,46 @@
 <template>
   <q-page class="column flex-center justify-center">
-    <p class="text-h2">Profile Page</p>
+    <p class="text-h2">Мой профиль</p>
 
-    <div class="q-pa-md" style="max-width: 400px; width: 100%">
-      <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-        <q-input filled v-model="username" label="Моё имя" lazy-rules />
-
-        <q-input filled type="tel" v-model="tel" label="Телефон" lazy-rules />
-
-        <q-input filled v-model="address" label="Адрес" lazy-rules />
-
-        <q-input
-          filled
-          v-model="aboutme"
-          label="Информация обо мне"
-          lazy-rules
-        />
-
-        <div class="flex items-center justify-around">
-          <q-btn label="Сохранить изменения" type="submit" color="primary" />
-          <q-btn
-            label="Сбросить"
-            type="reset"
-            color="primary"
-            flat
-            class="q-ml-sm"
-          />
+    <div class="q-pa-md">
+      <div
+        v-for="item in data"
+        :key="item.name"
+        class="row items-center justify-start"
+      >
+        <div class="col-4">
+          {{ item.name }}
         </div>
-      </q-form>
+        <div class="col-8">
+          {{ item.value }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row items-center" style="gap: 10px">
+      <q-btn color="primary" :href="'profile/edit'" class="col-12"
+        >Редактировать профиль</q-btn
+      >
+      <q-btn color="negative" @click="removeUser" class="col-12"
+        >Удалить аккаунт</q-btn
+      >
     </div>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useQuasar } from 'quasar';
+const data = [
+  { name: 'Имя:', value: 'Денис' },
+  { name: 'Телефон:', value: '+375445549522' },
+  { name: 'Адрес:', value: 'Беларусь, Светлогорский р-н, а.г. Козловка' },
+  { name: 'Обо мне:', value: 'Fullstack-developer' },
+];
 
-const $q = useQuasar();
+function removeUser() {
+  const isRemove = window.confirm('Вы дейстивтельно хотите удалить аккаунт?');
 
-const username = ref(null);
-const tel = ref(null);
-const address = ref(null);
-const aboutme = ref(null);
-
-function onSubmit() {
-  if (!username.value && !tel.value && !address.value && !aboutme.value) return;
-
-  $q.notify({
-    color: 'green-4',
-    textColor: 'white',
-    icon: 'cloud_done',
-    message: 'Данные изменены',
-  });
-
-  onReset();
-}
-
-function onReset() {
-  username.value = null;
-  tel.value = null;
-  address.value = null;
-  aboutme.value = null;
+  if (isRemove) {
+    window.location.href = '/';
+  }
 }
 </script>
