@@ -20,9 +20,20 @@
       style="padding: 16px"
       class="flex items-center justify-evenly"
     >
-      <a class="text-caption" href="/">На главную</a>
+      <router-link
+        to="/"
+        style="text-decoration: none; color: black"
+        class="text-caption text-weight-bold"
+        >На главную</router-link
+      >
       <p class="text-caption" style="margin: 0">
-        {{ backTitle }} <a :href="backLinkHref">{{ backLinkTitle }}</a>
+        {{ backTitle }}
+        <router-link
+          :to="backLinkHref || '#'"
+          style="text-decoration: none; color: black"
+          class="text-caption text-weight-bold"
+          >{{ backLinkTitle }}</router-link
+        >
       </p>
     </q-card-actions>
     <q-separator inset />

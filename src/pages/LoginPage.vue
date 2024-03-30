@@ -67,6 +67,7 @@ function onSubmit() {
     });
   } else {
     onReset();
+    window.location.href = '/profile';
   }
 }
 

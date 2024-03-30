@@ -18,7 +18,7 @@
     </div>
 
     <div class="row items-center" style="gap: 10px">
-      <q-btn color="primary" :href="'profile/edit'" class="col-12"
+      <q-btn color="primary" to="profile/edit" class="col-12"
         >Редактировать профиль</q-btn
       >
       <q-btn color="negative" @click="removeUser" class="col-12"

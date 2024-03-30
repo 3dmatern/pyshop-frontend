@@ -29,7 +29,7 @@
         </div>
 
         <div class="flex items-center justify-around">
-          <q-btn label="Вернуться в профиль" color="black" :href="'/profile'" />
+          <q-btn label="Вернуться в профиль" color="black" to="/profile" />
         </div>
       </q-form>
     </div>

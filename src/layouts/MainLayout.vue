@@ -1,10 +1,15 @@
 <template>
   <q-layout>
     <q-header class="q-pa-md flex items-center" elevated>
-      <q-toolbar-title> PyShop Test </q-toolbar-title>
+      <q-toolbar-title>
+        <router-link to="/" style="text-decoration: none; color: white"
+          >PyShop Test</router-link
+        ></q-toolbar-title
+      >
+
       <q-btn-group>
-        <q-btn color="white" text-color="black" label="Вход" :href="'/login'" />
-        <q-btn color="black" label="Регистрация" :href="'/register'" />
+        <q-btn color="white" to="/login" text-color="black" label="Вход" />
+        <q-btn color="black" label="Регистрация" to="/register" />
       </q-btn-group>
     </q-header>
     <q-page-container class="q-pa-md">
