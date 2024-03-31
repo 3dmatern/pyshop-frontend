@@ -4,6 +4,7 @@ import RegisterPage from 'src/pages/RegisterPage.vue';
 import LoginPage from 'src/pages/LoginPage.vue';
 import ProfilePage from 'pages/ProfilePage.vue';
 import ProfileEditPage from 'src/pages/ProfileEditPage.vue';
+import ProtectedLayout from 'src/layouts/ProtectedLayout.vue';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -16,8 +17,14 @@ const routes: RouteRecordRaw[] = [
         component: RegisterPage, // Синтаксис загрузки при небольшом приложении
       },
       { path: 'login', component: LoginPage },
-      { path: 'profile', component: ProfilePage },
-      { path: 'profile/edit', component: ProfileEditPage },
+    ],
+  },
+  {
+    path: '/profile',
+    component: ProtectedLayout,
+    children: [
+      { path: '', component: ProfilePage },
+      { path: 'edit', component: ProfileEditPage },
     ],
   },
 

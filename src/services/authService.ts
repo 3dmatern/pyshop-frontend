@@ -1,3 +1,4 @@
+import { Auth } from 'src/main-types';
 import httpService from './httpService';
 import { getAccessToken } from './localStorageService';
 

@@ -1,15 +1,13 @@
+import { GetUserResponseType } from 'src/main-types';
 import httpService from './httpService';
-import { getAccessToken } from './localStorageService';
 
 const userService = {
-  getUserById: async (id: string) => {
-    const { data } = await httpService.get(`user/${id}`, {
+  getUser: async (token: string) => {
+    const { data } = await httpService.get<GetUserResponseType>('user', {
       headers: {
-        Authorization: `Bearer ${getAccessToken()}`,
+        Authorization: `Bearer ${token}`,
       },
     });
-
-    console.log(data);
 
     return data;
   },

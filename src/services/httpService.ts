@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import appConfig from 'config.json';
+import appConfig from '../../config.json';
 
 const httpService = axios.create({
   baseURL: appConfig.API_ENDPOINT,

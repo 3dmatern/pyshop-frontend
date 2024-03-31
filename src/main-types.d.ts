@@ -6,5 +6,11 @@ interface Auth {
 interface Tokens {
   accessToken: string;
   expiresIn: string;
-  userId: string;
 }
+
+export type GetUserResponseType = {
+  name: string;
+  tel: string;
+  address: string;
+  aboutMe: string;
+};

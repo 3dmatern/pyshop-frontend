@@ -1,11 +1,11 @@
+import { Tokens } from 'src/main-types';
+
 const TOKEN_KEY = 'jwt-token';
 const EXPIRES_KEY = 'jwt-expires';
-const USERID_KEY = 'user-id';
 
-export const setTokens = ({ accessToken, expiresIn, userId }: Tokens) => {
+export const setTokens = ({ accessToken, expiresIn }: Tokens) => {
   localStorageSet(TOKEN_KEY, accessToken);
   localStorageSet(EXPIRES_KEY, expiresIn);
-  localStorageSet(USERID_KEY, userId);
 };
 
 export const getAccessToken = () => {
@@ -16,17 +16,17 @@ export const getTokenExpiresDate = () => {
   return localStorageGet(EXPIRES_KEY);
 };
 
-export const getUserId = () => {
-  return localStorageGet(USERID_KEY);
-};
-
-export const deleteTokens = () => {
+export const removeTokens = () => {
   localStorageRemove(TOKEN_KEY);
   localStorageRemove(EXPIRES_KEY);
-  localStorageRemove(USERID_KEY);
 };
 
-const localStorageService = { setTokens };
+const localStorageService = {
+  setTokens,
+  getAccessToken,
+  getTokenExpiresDate,
+  removeTokens,
+};
 
 export default localStorageService;
 
