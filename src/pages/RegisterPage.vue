@@ -46,13 +46,14 @@ import { ref } from 'vue';
 import { useQuasar } from 'quasar';
 
 import CardForm from 'components/CardForm.vue';
+import authService from 'src/services/authService';
 
 const $q = useQuasar();
 
 const email = ref(null);
 const password = ref(null);
 
-function onSubmit() {
+async function onSubmit() {
   if (!email.value || !password.value) {
     $q.notify({
       color: 'red-5',
@@ -61,14 +62,25 @@ function onSubmit() {
       message: 'Сначала вам необходимо заполнить все поля',
     });
   } else {
-    $q.notify({
-      color: 'green-4',
-      textColor: 'white',
-      icon: 'cloud_done',
-      message: 'Регистрация прошла успешно',
-    });
+    try {
+      const data = await authService.register({
+        email: email.value,
+        password: password.value,
+      });
 
-    onReset();
+      console.log(data);
+
+      $q.notify({
+        color: 'green-4',
+        textColor: 'white',
+        icon: 'cloud_done',
+        message: 'Регистрация прошла успешно',
+      });
+
+      // onReset();
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
 

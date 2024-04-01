@@ -4,7 +4,7 @@
 
     <div class="q-pa-md" style="max-width: 400px; width: 100%">
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-        <q-input filled v-model="username" label="Моё имя" lazy-rules />
+        <q-input filled v-model="name" label="Моё имя" lazy-rules />
 
         <q-input filled type="tel" v-model="tel" label="Телефон" lazy-rules />
 
@@ -12,7 +12,7 @@
 
         <q-input
           filled
-          v-model="aboutme"
+          v-model="aboutMe"
           label="Информация обо мне"
           lazy-rules
         />
@@ -40,15 +40,18 @@
 import { ref } from 'vue';
 import { useQuasar } from 'quasar';
 
-const $q = useQuasar();
+import { useAuthStore } from '../stores/auth';
 
-const username = ref('Денис');
-const tel = ref('+375445549522');
-const address = ref('Беларусь, Светлогорский р-н, а.г. Козловка');
-const aboutme = ref('Fullstack-developer');
+const $q = useQuasar();
+const authStore = useAuthStore();
+
+const name = ref(authStore.userProfile?.name);
+const tel = ref(authStore.userProfile?.tel);
+const address = ref(authStore.userProfile?.address);
+const aboutMe = ref(authStore.userProfile?.aboutMe);
 
 function onSubmit() {
-  if (!username.value && !tel.value && !address.value && !aboutme.value) return;
+  if (!name.value && !tel.value && !address.value && !aboutMe.value) return;
 
   $q.notify({
     color: 'green-4',
@@ -58,19 +61,19 @@ function onSubmit() {
   });
 
   console.log({
-    username: username.value,
+    name: name.value,
     tel: tel.value,
     address: address.value,
-    aboutme: aboutme.value,
+    aboutMe: aboutMe.value,
   });
 
   onReset();
 }
 
 function onReset() {
-  username.value = '';
+  name.value = '';
   tel.value = '';
   address.value = '';
-  aboutme.value = '';
+  aboutMe.value = '';
 }
 </script>

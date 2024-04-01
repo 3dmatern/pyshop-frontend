@@ -14,7 +14,7 @@
           label="Your email *"
           lazy-rules
           :rules="[
-            (val) => (val && val.length > 0) || 'Пожалуйста, введите email',
+            (val: string | any[]) => (val && val.length > 0) || 'Пожалуйста, введите email',
           ]"
         />
 
@@ -25,7 +25,7 @@
           label="Your password *"
           lazy-rules
           :rules="[
-            (val) =>
+            (val: string | any[]) =>
               (val && val.length >= 6) ||
               'Пожалуйста, введите пароль не мнеьше 6 символов',
           ]"
@@ -48,16 +48,22 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 
 import CardForm from 'components/CardForm.vue';
+import authService from '../services/authService';
+import { parseToken } from '../utils/parseToken';
+import { setTokens } from 'src/services/localStorageService';
+import { useAuthStore } from 'src/stores/auth';
 
 const $q = useQuasar();
+const router = useRouter();
 
 const email = ref(null);
 const password = ref(null);
 
-function onSubmit() {
+async function onSubmit() {
   if (!email.value || !password.value) {
     $q.notify({
       color: 'red-5',
@@ -66,8 +72,26 @@ function onSubmit() {
       message: 'Сначала вам необходимо заполнить все поля',
     });
   } else {
-    onReset();
-    window.location.href = '/profile';
+    try {
+      const { access_token } = await authService.login({
+        email: email.value,
+        password: password.value,
+      });
+      const { sub, username, exp } = await parseToken(access_token);
+      const authStore = useAuthStore();
+
+      authStore.setCurrentUser({ id: String(sub), username });
+      setTokens({
+        accessToken: access_token,
+        expiresIn: String(exp),
+        userId: +sub,
+        username,
+      });
+      onReset();
+      router.push('/profile');
+    } catch (error) {
+      console.error('Ошибка входа:', error);
+    }
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <q-btn color="primary" :label="userName">
+  <q-btn color="white" text-color="black" :label="username">
     <q-menu>
       <q-list style="min-width: 100px">
         <q-item clickable v-close-popup>
@@ -14,16 +14,24 @@
             ></q-item-section
           >
         </q-item>
+        <q-item clickable v-close-popup>
+          <q-item-section
+            ><router-link to="/">Выход</router-link></q-item-section
+          >
+        </q-item>
       </q-list>
     </q-menu>
   </q-btn>
 </template>
 
 <script setup lang="ts">
+interface Props {
+  username?: string;
+}
+withDefaults(defineProps<Props>(), {
+  username: 'No Name',
+});
 defineOptions({
   name: 'ProfileMenu',
-});
-defineProps({
-  userName: String,
 });
 </script>

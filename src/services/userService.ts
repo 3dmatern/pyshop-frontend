@@ -1,9 +1,9 @@
-import { GetUserResponseType } from 'src/main-types';
+import { UserProfile } from 'src/main-types';
 import httpService from './httpService';
 
 const userService = {
   getUser: async (token: string) => {
-    const { data } = await httpService.get<GetUserResponseType>('user', {
+    const { data } = await httpService.get<UserProfile>('users/user', {
       headers: {
         Authorization: `Bearer ${token}`,
       },

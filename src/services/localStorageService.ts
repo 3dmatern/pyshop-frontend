@@ -2,10 +2,19 @@ import { Tokens } from 'src/main-types';
 
 const TOKEN_KEY = 'jwt-token';
 const EXPIRES_KEY = 'jwt-expires';
+const USERID_KEY = 'userId';
+const username_KEY = 'username';
 
-export const setTokens = ({ accessToken, expiresIn }: Tokens) => {
+export const setTokens = ({
+  accessToken,
+  expiresIn,
+  userId,
+  username,
+}: Tokens) => {
   localStorageSet(TOKEN_KEY, accessToken);
   localStorageSet(EXPIRES_KEY, expiresIn);
+  localStorageSet(USERID_KEY, String(userId));
+  localStorageSet(username_KEY, username);
 };
 
 export const getAccessToken = () => {
@@ -16,15 +25,24 @@ export const getTokenExpiresDate = () => {
   return localStorageGet(EXPIRES_KEY);
 };
 
+export const getUserData = () => {
+  const id = localStorageGet(USERID_KEY);
+  const username = localStorageGet(username_KEY);
+  return { id, username };
+};
+
 export const removeTokens = () => {
   localStorageRemove(TOKEN_KEY);
   localStorageRemove(EXPIRES_KEY);
+  localStorageRemove(USERID_KEY);
+  localStorageRemove(username_KEY);
 };
 
 const localStorageService = {
   setTokens,
   getAccessToken,
   getTokenExpiresDate,
+  getUserData,
   removeTokens,
 };
 

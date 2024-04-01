@@ -6,7 +6,7 @@ const httpService = axios.create({
   baseURL: appConfig.API_ENDPOINT,
 });
 
-axios.interceptors.request.use(
+httpService.interceptors.request.use(
   (config) => {
     console.log(config);
 
@@ -19,7 +19,7 @@ axios.interceptors.request.use(
   }
 );
 
-axios.interceptors.response.use(
+httpService.interceptors.response.use(
   (response) => {
     console.log(response);
 

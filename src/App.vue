@@ -7,12 +7,12 @@
         ></q-toolbar-title
       >
 
-      <q-btn-group v-if="!currentUser">
+      <q-btn-group v-if="!authStore.currentUser">
         <q-btn color="white" to="/login" text-color="black" label="Вход" />
         <q-btn color="black" label="Регистрация" to="/register" />
       </q-btn-group>
 
-      <ProfileMenu v-else :userName="currentUser?.name" />
+      <ProfileMenu v-else :username="authStore.currentUser.username" />
     </q-header>
     <router-view />
     <q-footer class="q-pa-md" elevated>
@@ -22,31 +22,13 @@
 </template>
 
 <script setup lang="ts">
-import { provide, ref } from 'vue';
+import { useAuthStore } from './stores/auth';
 
-import { getAccessToken, removeTokens } from './services/localStorageService';
-import userService from './services/userService';
-import { GetUserResponseType } from './main-types';
+import ProfileMenu from './components/ProfileMenu.vue';
 
-import ProfileMenu from 'components/ProfileMenu.vue';
+const authStore = useAuthStore();
 
 defineOptions({
   name: 'App',
 });
-
-const token = getAccessToken();
-const currentUser = ref<GetUserResponseType>();
-
-if (token) {
-  userService
-    .getUser(token)
-    .then((data) => (currentUser.value = data))
-    .catch((err) => console.log(err));
-} else {
-  removeTokens();
-}
-
-console.log('currentUser', currentUser.value);
-console.log('token', token);
-provide('currentUser', currentUser.value);
 </script>

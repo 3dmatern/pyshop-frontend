@@ -1,30 +1,48 @@
 import { RouteRecordRaw } from 'vue-router';
 
-import RegisterPage from 'src/pages/RegisterPage.vue';
-import LoginPage from 'src/pages/LoginPage.vue';
-import ProfilePage from 'pages/ProfilePage.vue';
-import ProfileEditPage from 'src/pages/ProfileEditPage.vue';
-import ProtectedLayout from 'src/layouts/ProtectedLayout.vue';
+import { useAuthStore } from '../stores/auth';
+import profileService from '../services/profileService';
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'), // Синтаксис отложенной загрузки при большом приложении
+    component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
       {
         path: 'register',
-        component: RegisterPage, // Синтаксис загрузки при небольшом приложении
+        component: () => import('pages/RegisterPage.vue'),
       },
-      { path: 'login', component: LoginPage },
+      { path: 'login', component: () => import('pages/LoginPage.vue') },
     ],
   },
   {
     path: '/profile',
-    component: ProtectedLayout,
+    component: () => import('layouts/ProfileLayout.vue'),
+    beforeEnter: async (to, from, next) => {
+      const authStore = useAuthStore();
+
+      if (authStore.currentUser) {
+        // Отправить запрос на сервер для получения данных профиля
+        try {
+          const profile = await profileService.getProfileByUserId(
+            authStore.currentUser.id
+          );
+          authStore.setUserProfile(profile);
+          next();
+        } catch (error) {
+          console.error('Ошибка получения данных профиля:', error);
+          // В случае ошибки можно выполнить редирект на другую страницу, например, на главную
+          // next('/');
+        }
+      } else {
+        // Редирект на главную страницу, если текущий пользователь отсутствует
+        next('/');
+      }
+    },
     children: [
-      { path: '', component: ProfilePage },
-      { path: 'edit', component: ProfileEditPage },
+      { path: '', component: () => import('pages/ProfilePage.vue') },
+      { path: 'edit', component: () => import('pages/ProfileEditPage.vue') },
     ],
   },
 

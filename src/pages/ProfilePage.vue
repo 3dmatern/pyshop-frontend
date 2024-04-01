@@ -1,17 +1,17 @@
 <template>
-  <q-page class="column flex-center justify-center">
+  <q-page class="column flex-center" style="max-width: 400px; margin: 0 auto">
     <p class="text-h2">Мой профиль</p>
 
-    <div class="q-pa-md">
+    <div class="q-pa-md" style="width: 100%">
       <div
-        v-for="item in data"
+        v-for="item in profileInfo"
         :key="item.name"
         class="row items-center justify-start"
       >
-        <div class="col-4">
+        <div class="col-5">
           {{ item.name }}
         </div>
-        <div class="col-8">
+        <div class="col-7">
           {{ item.value }}
         </div>
       </div>
@@ -29,11 +29,15 @@
 </template>
 
 <script setup lang="ts">
-const data = [
-  { name: 'Имя:', value: 'Денис' },
-  { name: 'Телефон:', value: '+375445549522' },
-  { name: 'Адрес:', value: 'Беларусь, Светлогорский р-н, а.г. Козловка' },
-  { name: 'Обо мне:', value: 'Fullstack-developer' },
+import { useAuthStore } from '../stores/auth';
+
+const authStore = useAuthStore();
+
+const profileInfo = [
+  { name: 'Имя:', value: authStore.userProfile?.name },
+  { name: 'Телефон:', value: authStore.userProfile?.tel },
+  { name: 'Адрес:', value: authStore.userProfile?.address },
+  { name: 'Обо мне:', value: authStore.userProfile?.aboutMe },
 ];
 
 function removeUser() {
