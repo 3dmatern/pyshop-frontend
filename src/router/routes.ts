@@ -1,7 +1,7 @@
 import { RouteRecordRaw } from 'vue-router';
 
 import { useAuthStore } from '../stores/auth';
-import profileService from '../services/profileService';
+import profileApi from 'src/boot/profileApi';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -25,7 +25,7 @@ const routes: RouteRecordRaw[] = [
       if (authStore.currentUser) {
         // Отправить запрос на сервер для получения данных профиля
         try {
-          const profile = await profileService.getProfileByUserId(
+          const profile = await profileApi.getProfileByUserId(
             authStore.currentUser.id
           );
           authStore.setUserProfile(profile);
@@ -33,7 +33,7 @@ const routes: RouteRecordRaw[] = [
         } catch (error) {
           console.error('Ошибка получения данных профиля:', error);
           // В случае ошибки можно выполнить редирект на другую страницу, например, на главную
-          // next('/');
+          next('/');
         }
       } else {
         // Редирект на главную страницу, если текущий пользователь отсутствует

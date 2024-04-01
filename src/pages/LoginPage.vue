@@ -52,10 +52,10 @@ import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 
 import CardForm from 'components/CardForm.vue';
-import authService from '../services/authService';
+import { authApi } from '../boot/authApi';
 import { parseToken } from '../utils/parseToken';
-import { setTokens } from 'src/services/localStorageService';
-import { useAuthStore } from 'src/stores/auth';
+import { setTokens } from '../boot/localStorageApi';
+import { useAuthStore } from '../stores/auth';
 
 const $q = useQuasar();
 const router = useRouter();
@@ -73,7 +73,7 @@ async function onSubmit() {
     });
   } else {
     try {
-      const { access_token } = await authService.login({
+      const { access_token } = await authApi.login({
         email: email.value,
         password: password.value,
       });
@@ -100,3 +100,4 @@ function onReset() {
   password.value = null;
 }
 </script>
+src/boot/localStorageService

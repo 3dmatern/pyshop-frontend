@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 
 import { UserProfile } from 'src/main-types';
-import { getAccessToken, getUserData } from 'src/services/localStorageService';
+import { getAccessToken, getUserData } from 'src/boot/localStorageApi';
 
 interface User {
   id: string;

@@ -46,7 +46,7 @@ import { ref } from 'vue';
 import { useQuasar } from 'quasar';
 
 import CardForm from 'components/CardForm.vue';
-import authService from 'src/services/authService';
+import { authApi } from '../boot/authApi';
 
 const $q = useQuasar();
 
@@ -63,7 +63,7 @@ async function onSubmit() {
     });
   } else {
     try {
-      const data = await authService.register({
+      const data = await authApi.register({
         email: email.value,
         password: password.value,
       });

@@ -38,7 +38,7 @@ export const removeTokens = () => {
   localStorageRemove(username_KEY);
 };
 
-const localStorageService = {
+const localStorageApi = {
   setTokens,
   getAccessToken,
   getTokenExpiresDate,
@@ -46,7 +46,7 @@ const localStorageService = {
   removeTokens,
 };
 
-export default localStorageService;
+export default localStorageApi;
 
 function localStorageSet(key: string, value: string) {
   localStorage.setItem(key, value);
