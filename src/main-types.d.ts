@@ -1,25 +1,29 @@
-export type Auth = {
+export interface Auth {
   email: string;
   password: string;
-};
+}
+
+export interface SignUpAuth extends Auth {
+  username: string;
+}
 
 interface Tokens {
   accessToken: string;
   expiresIn: string;
-  userId: number;
+  userId: string;
   username: string;
 }
 
 export type ParseToken = {
-  sub: number | string;
+  sub: string;
   username: string;
   iat: number;
   exp: number;
 };
 
 export type UserProfile = {
-  id: number;
-  userId: number;
+  id: string;
+  userId: string;
   name: string;
   tel: string;
   address: string;

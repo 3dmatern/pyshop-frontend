@@ -9,20 +9,28 @@
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
         <q-input
           filled
+          v-model="username"
+          label="Имя"
+          lazy-rules
+          :rules="[
+            (val) => (val && val.length > 0) || 'Пожалуйста, введите имя',
+          ]"
+        />
+        <q-input
+          filled
           type="email"
           v-model="email"
-          label="Your email *"
+          label="Email"
           lazy-rules
           :rules="[
             (val) => (val && val.length > 0) || 'Пожалуйста, введите email',
           ]"
         />
-
         <q-input
           filled
           type="password"
           v-model="password"
-          label="Your password *"
+          label="Пароль"
           lazy-rules
         />
 
@@ -50,11 +58,12 @@ import { authApi } from '../boot/authApi';
 
 const $q = useQuasar();
 
+const username = ref(null);
 const email = ref(null);
 const password = ref(null);
 
 async function onSubmit() {
-  if (!email.value || !password.value) {
+  if (!username.value || !email.value || !password.value) {
     $q.notify({
       color: 'red-5',
       textColor: 'white',
@@ -63,12 +72,11 @@ async function onSubmit() {
     });
   } else {
     try {
-      const data = await authApi.register({
+      await authApi.register({
+        username: username.value,
         email: email.value,
         password: password.value,
       });
-
-      console.log(data);
 
       $q.notify({
         color: 'green-4',
@@ -77,7 +85,7 @@ async function onSubmit() {
         message: 'Регистрация прошла успешно',
       });
 
-      // onReset();
+      onReset();
     } catch (error) {
       console.error(error);
     }
@@ -85,6 +93,7 @@ async function onSubmit() {
 }
 
 function onReset() {
+  username.value = null;
   email.value = null;
   password.value = null;
 }

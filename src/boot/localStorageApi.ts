@@ -13,7 +13,7 @@ export const setTokens = ({
 }: Tokens) => {
   localStorageSet(TOKEN_KEY, accessToken);
   localStorageSet(EXPIRES_KEY, expiresIn);
-  localStorageSet(USERID_KEY, String(userId));
+  localStorageSet(USERID_KEY, userId);
   localStorageSet(username_KEY, username);
 };
 

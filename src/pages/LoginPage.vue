@@ -80,17 +80,25 @@ async function onSubmit() {
       const { sub, username, exp } = await parseToken(access_token);
       const authStore = useAuthStore();
 
-      authStore.setCurrentUser({ id: String(sub), username });
+      authStore.setCurrentUser({ id: sub, username });
       setTokens({
         accessToken: access_token,
         expiresIn: String(exp),
-        userId: +sub,
+        userId: sub,
         username,
       });
       onReset();
       router.push('/profile');
-    } catch (error) {
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       console.error('Ошибка входа:', error);
+      $q.notify({
+        color: 'red-5',
+        textColor: 'white',
+        icon: 'warning',
+        message: error.response?.data?.message,
+      });
     }
   }
 }
@@ -100,4 +108,3 @@ function onReset() {
   password.value = null;
 }
 </script>
-src/boot/localStorageService

@@ -1,14 +1,10 @@
-import { Auth, UserProfile } from '../main-types';
+import { Auth, SignUpAuth, UserProfile } from '../main-types';
 import { api } from './axios';
 import { getAccessToken } from './localStorageApi';
 
 export const authApi = {
-  register: async (payload: Auth) => {
-    const { data } = await api.post('auth/register', payload);
-
-    console.log(data);
-
-    return data;
+  register: async (payload: SignUpAuth) => {
+    await api.post('auth/register', payload);
   },
   login: async (
     payload: Auth

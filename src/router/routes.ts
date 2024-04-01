@@ -2,6 +2,7 @@ import { RouteRecordRaw } from 'vue-router';
 
 import { useAuthStore } from '../stores/auth';
 import profileApi from 'src/boot/profileApi';
+import localStorageApi from 'src/boot/localStorageApi';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -23,10 +24,14 @@ const routes: RouteRecordRaw[] = [
       const authStore = useAuthStore();
 
       if (authStore.currentUser) {
+        console.log(authStore.currentUser);
+
         // Отправить запрос на сервер для получения данных профиля
         try {
+          const token = localStorageApi.getAccessToken();
           const profile = await profileApi.getProfileByUserId(
-            authStore.currentUser.id
+            authStore.currentUser.id,
+            token
           );
           authStore.setUserProfile(profile);
           next();
