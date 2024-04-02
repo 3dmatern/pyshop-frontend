@@ -72,7 +72,6 @@ const email = ref(null);
 const password = ref(null);
 
 async function onSubmit() {
-  console.log('тут');
   if (!username.value || !email.value || !password.value) {
     $q.notify({
       color: 'red-5',
