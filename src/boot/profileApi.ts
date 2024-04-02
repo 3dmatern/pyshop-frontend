@@ -7,6 +7,11 @@ const profileApi = {
 
     return data;
   },
+  updateProfile: async (payload: UserProfile) => {
+    const { data } = await api.post<UserProfile>('profiles', payload);
+
+    return data;
+  },
 };
 
 export default profileApi;

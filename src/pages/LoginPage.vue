@@ -69,37 +69,39 @@ async function onSubmit() {
       color: 'red-5',
       textColor: 'white',
       icon: 'warning',
-      message: 'Сначала вам необходимо заполнить все поля',
+      message: 'Вам необходимо заполнить все поля',
     });
-  } else {
-    try {
-      const { access_token } = await authApi.login({
-        email: email.value,
-        password: password.value,
-      });
-      const { sub, username, exp } = await parseToken(access_token);
-      const authStore = useAuthStore();
+    return;
+  }
 
-      authStore.setCurrentUser({ id: sub, username });
-      setTokens({
-        accessToken: access_token,
-        expiresIn: String(exp),
-        userId: sub,
-        username,
-      });
-      onReset();
-      router.push('/profile');
+  try {
+    const { access_token } = await authApi.login({
+      email: email.value,
+      password: password.value,
+    });
+    const { sub, username, exp } = await parseToken(access_token);
+    const authStore = useAuthStore();
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      console.error('Ошибка входа:', error);
-      $q.notify({
-        color: 'red-5',
-        textColor: 'white',
-        icon: 'warning',
-        message: error.response?.data?.message,
-      });
-    }
+    authStore.setCurrentUser({ id: sub, username });
+    setTokens({
+      accessToken: access_token,
+      expiresIn: String(exp),
+      userId: sub,
+      username,
+    });
+    onReset();
+    router.push('/profile');
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    console.error('Ошибка входа:', error);
+
+    $q.notify({
+      color: 'red-5',
+      textColor: 'white',
+      icon: 'warning',
+      message: error.response?.data?.message,
+    });
   }
 }
 

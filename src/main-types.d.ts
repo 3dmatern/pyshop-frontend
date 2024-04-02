@@ -22,12 +22,10 @@ export type ParseToken = {
 };
 
 export type UserProfile = {
-  id: string;
-  userId: string;
   name: string;
-  tel: string;
-  address: string;
-  aboutMe: string;
+  tel: string | undefined;
+  address: string | undefined;
+  aboutMe: string | undefined;
 };
 
 export interface ProfileInfo {
