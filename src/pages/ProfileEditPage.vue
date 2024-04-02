@@ -68,7 +68,7 @@ async function onSubmit() {
 
   try {
     const payload = {
-      name: name.value,
+      name: name.value?.trim(),
       tel: tel.value?.trim(),
       address: address.value?.trim(),
       aboutMe: aboutMe.value?.trim(),
