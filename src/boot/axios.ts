@@ -2,6 +2,9 @@ import { boot } from 'quasar/wrappers';
 import axios, { AxiosInstance } from 'axios';
 
 import appConfig from '../../config.json';
+import localStorageApi from './localStorageApi';
+import { authApi } from './authApi';
+import { parseToken } from 'src/utils/parseToken';
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
@@ -17,6 +20,7 @@ declare module '@vue/runtime-core' {
 // "export default () => {}" function below (which runs individually
 // for each client)
 const api = axios.create({ baseURL: appConfig.API_ENDPOINT });
+let isRefreshingToken = false;
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
@@ -31,8 +35,54 @@ export default boot(({ app }) => {
 });
 
 api.interceptors.request.use(
-  (config) => {
-    console.log(config);
+  async (config) => {
+    const accessToken = localStorageApi.getAccessToken();
+    const expiresToken = localStorageApi.getTokenExpiresToken();
+    const userId = localStorageApi.getUserData()?.id;
+
+    if (expiresToken && !isNaN(+expiresToken)) {
+      const currentTime = Math.floor(Date.now() / 1000);
+      const leftLittleTime = +expiresToken - currentTime;
+      const isExpires = leftLittleTime > 0 && leftLittleTime <= 60;
+      const isExpired = currentTime >= +expiresToken;
+
+      if (isExpired) {
+        localStorageApi.removeTokens();
+      } else if (isExpires && userId && accessToken) {
+        if (!isRefreshingToken) {
+          try {
+            isRefreshingToken = true;
+
+            const refreshAccessToken = await authApi.refreshAccessToken(
+              accessToken
+            );
+            const { sub, username, exp } = await parseToken(refreshAccessToken);
+
+            if (userId === sub) {
+              localStorageApi.setTokens({
+                accessToken: refreshAccessToken,
+                expiresIn: String(exp),
+                userId: sub,
+                username,
+              });
+              config.headers.Authorization = `Bearer ${refreshAccessToken}`;
+            } else {
+              localStorageApi.removeTokens();
+            }
+          } catch (error) {
+            console.error('Ошибка при обновлении токена:', error);
+            localStorageApi.removeTokens();
+          } finally {
+            isRefreshingToken = false;
+          }
+        }
+      } else {
+        if (accessToken) {
+          config.headers.Authorization = `Bearer ${accessToken}`;
+        }
+      }
+    }
+
     return config;
   },
   (error) => {
@@ -43,7 +93,6 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response) => {
-    console.log(response);
     return response;
   },
   (error) => {

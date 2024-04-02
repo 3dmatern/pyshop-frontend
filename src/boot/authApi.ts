@@ -1,6 +1,5 @@
 import { Auth, SignUpAuth, UserProfile } from '../main-types';
 import { api } from './axios';
-import { getAccessToken } from './localStorageApi';
 
 export const authApi = {
   register: async (payload: SignUpAuth) => {
@@ -16,12 +15,12 @@ export const authApi = {
 
     return data;
   },
-  refreshToken: async () => {
+  refreshAccessToken: async (accessToken: string): Promise<string> => {
     const { data } = await api.post('auth/token', {
-      refresh: getAccessToken(),
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
-
-    console.log(data);
 
     return data;
   },

@@ -24,20 +24,22 @@ const routes: RouteRecordRaw[] = [
       const authStore = useAuthStore();
 
       if (authStore.currentUser) {
-        console.log(authStore.currentUser);
-
         // Отправить запрос на сервер для получения данных профиля
         try {
-          const token = localStorageApi.getAccessToken();
-          const profile = await profileApi.getProfileByUserId(
-            authStore.currentUser.id,
-            token
-          );
-          authStore.setUserProfile(profile);
+          const accessToken = localStorageApi.getAccessToken();
+
+          if (accessToken) {
+            const profile = await profileApi.getProfileByUserId(
+              authStore.currentUser.id
+            );
+            authStore.setUserProfile(profile);
+          }
+
           next();
         } catch (error) {
           console.error('Ошибка получения данных профиля:', error);
           // В случае ошибки можно выполнить редирект на другую страницу, например, на главную
+          authStore.clearCurrentUser();
           next('/');
         }
       } else {

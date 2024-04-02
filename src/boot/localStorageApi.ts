@@ -17,18 +17,23 @@ export const setTokens = ({
   localStorageSet(username_KEY, username);
 };
 
-export const getAccessToken = () => {
+export const getAccessToken = (): string | null => {
   return localStorageGet(TOKEN_KEY);
 };
 
-export const getTokenExpiresDate = () => {
+export const getTokenExpiresToken = (): string | null => {
   return localStorageGet(EXPIRES_KEY);
 };
 
-export const getUserData = () => {
+export const getUserData = (): { id: string; username: string } | null => {
   const id = localStorageGet(USERID_KEY);
   const username = localStorageGet(username_KEY);
-  return { id, username };
+
+  if (id && username) {
+    return { id, username };
+  }
+
+  return null;
 };
 
 export const removeTokens = () => {
@@ -41,7 +46,7 @@ export const removeTokens = () => {
 const localStorageApi = {
   setTokens,
   getAccessToken,
-  getTokenExpiresDate,
+  getTokenExpiresToken,
   getUserData,
   removeTokens,
 };

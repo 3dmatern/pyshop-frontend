@@ -2,13 +2,8 @@ import { UserProfile } from '../main-types';
 import { api } from './axios';
 
 const profileApi = {
-  getProfileByUserId: async (userId: string, token: string | null) => {
-    console.log(token);
-    const { data } = await api.get<UserProfile>(`profiles/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  getProfileByUserId: async (userId: string) => {
+    const { data } = await api.get<UserProfile>(`profiles/${userId}`);
 
     return data;
   },
