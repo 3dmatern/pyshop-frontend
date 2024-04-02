@@ -10,8 +10,8 @@
           label="Имя"
           lazy-rules
           :rules="[
-          (val: string | any[]) => (String(val).trim() && val.length > 1) || 'Введите ваше имя, минимум 2 символа',
-          (val: string | any[]) => (val.length < 30) || 'Максимум 30 символов'
+          (val: string ) => (val && val.length > 1) || 'Введите ваше имя, минимум 2 символа',
+          (val: string ) => (val.length < 31) || 'Максимум 30 символов'
         ]"
         />
 
@@ -84,7 +84,7 @@ async function onSubmit() {
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.error('Ошибка при обновлении профиля', error.response);
+    console.error('Ошибка при обновлении профиля', error);
 
     $q.notify({
       color: 'red-5',

@@ -13,7 +13,8 @@
           label="Имя"
           lazy-rules
           :rules="[
-            (val) => (val && val.length > 0) || 'Пожалуйста, введите имя',
+            (val: string) => (val && val.length > 1) || 'Введите ваше имя, минимум 2 символа',
+            (val: string) => (val.length < 31) || 'Максимум 30 символов'
           ]"
         />
         <q-input
@@ -24,14 +25,21 @@
           lazy-rules
           :rules="[
             (val) => (val && val.length > 0) || 'Пожалуйста, введите email',
+            (val) =>
+              validateEmail(val) || 'Пожалуйста, введите корректный email',
           ]"
         />
+
         <q-input
           filled
           type="password"
           v-model="password"
           label="Пароль"
           lazy-rules
+          :rules="[
+            (val: string | any[]) => (String(val).trim() && val.length > 5) || 'Введите ваше имя, минимум 6 символов',
+            (val: string | any[]) => (val.length < 21) || 'Максимум 20 символов'
+          ]"
         />
 
         <div class="flex items-center justify-around">
@@ -55,6 +63,7 @@ import { useQuasar } from 'quasar';
 
 import CardForm from 'components/CardForm.vue';
 import { authApi } from '../boot/authApi';
+import { validateEmail } from '../utils/validate';
 
 const $q = useQuasar();
 
@@ -63,6 +72,7 @@ const email = ref(null);
 const password = ref(null);
 
 async function onSubmit() {
+  console.log('тут');
   if (!username.value || !email.value || !password.value) {
     $q.notify({
       color: 'red-5',
@@ -86,8 +96,16 @@ async function onSubmit() {
       });
 
       onReset();
-    } catch (error) {
-      console.error(error);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error('Ошибка при регистрации пользователя', error);
+
+      $q.notify({
+        color: 'red-5',
+        textColor: 'white',
+        icon: 'warning',
+        message: error.response?.data?.message,
+      });
     }
   }
 }

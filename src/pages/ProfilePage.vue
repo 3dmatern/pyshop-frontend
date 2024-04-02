@@ -58,7 +58,7 @@ async function removeUser() {
       router.push('/');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.error('Ошибка при удалении профиля', error.response);
+      console.error('Ошибка при удалении профиля', error);
 
       $q.notify({
         color: 'red-5',

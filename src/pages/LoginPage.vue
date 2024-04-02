@@ -11,10 +11,12 @@
           filled
           type="email"
           v-model="email"
-          label="Your email *"
+          label="Email"
           lazy-rules
           :rules="[
-            (val: string | any[]) => (val && val.length > 0) || 'Пожалуйста, введите email',
+            (val) => (val && val.length > 0) || 'Пожалуйста, введите email',
+            (val) =>
+              validateEmail(val) || 'Пожалуйста, введите корректный email',
           ]"
         />
 
@@ -22,12 +24,10 @@
           filled
           type="password"
           v-model="password"
-          label="Your password *"
+          label="Пароль"
           lazy-rules
           :rules="[
-            (val: string | any[]) =>
-              (val && val.length >= 6) ||
-              'Пожалуйста, введите пароль не мнеьше 6 символов',
+            (val: string | any[]) =>(val && val.length > 0) ||'Пожалуйста, введите пароль',
           ]"
         />
 
@@ -56,6 +56,7 @@ import { authApi } from '../boot/authApi';
 import { parseToken } from '../utils/parseToken';
 import { setTokens } from '../boot/localStorageApi';
 import { useAuthStore } from '../stores/auth';
+import { validateEmail } from '../utils/validate';
 
 const $q = useQuasar();
 const router = useRouter();
