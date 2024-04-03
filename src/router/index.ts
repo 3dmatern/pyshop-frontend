@@ -48,8 +48,6 @@ export default route(function (/* { store, ssrContext } */) {
     if (expiresToken && !isNaN(+expiresToken)) {
       const currentTime = Math.floor(Date.now() / 1000);
       const leftLittleTime = +expiresToken - currentTime;
-      console.log(leftLittleTime);
-
       const isExpires = leftLittleTime > 0 && leftLittleTime <= 1800;
 
       if (isExpires && userId && accessToken) {
