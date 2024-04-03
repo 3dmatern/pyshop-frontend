@@ -12,9 +12,26 @@ const routes: RouteRecordRaw[] = [
       { path: '', component: () => import('pages/IndexPage.vue') },
       {
         path: 'register',
+        beforeEnter: (to, from, next) => {
+          const authStore = useAuthStore();
+
+          if (authStore.currentUser) {
+            next(from.path);
+          }
+        },
         component: () => import('pages/RegisterPage.vue'),
       },
-      { path: 'login', component: () => import('pages/LoginPage.vue') },
+      {
+        path: 'login',
+        beforeEnter: (to, from, next) => {
+          const authStore = useAuthStore();
+
+          if (authStore.currentUser) {
+            next(from.path);
+          }
+        },
+        component: () => import('pages/LoginPage.vue'),
+      },
       {
         path: 'logout',
         component: () => null,

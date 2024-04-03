@@ -32,13 +32,19 @@
         />
 
         <div class="flex items-center justify-around">
-          <q-btn label="Войти" type="submit" color="primary" />
+          <q-btn
+            label="Войти"
+            type="submit"
+            color="primary"
+            :disable="isSubmit.disable"
+          />
           <q-btn
             label="Сбросить"
             type="reset"
             color="primary"
             flat
             class="q-ml-sm"
+            :disable="isSubmit.disable"
           />
         </div>
       </q-form>
@@ -47,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 
@@ -60,6 +66,7 @@ import { validateEmail } from '../utils/validate';
 
 const $q = useQuasar();
 const router = useRouter();
+const isSubmit = reactive({ disable: false });
 
 const email = ref(null);
 const password = ref(null);
@@ -74,6 +81,7 @@ async function onSubmit() {
     });
     return;
   }
+  isSubmit.disable = true;
 
   try {
     const { access_token } = await authApi.login({
@@ -103,6 +111,8 @@ async function onSubmit() {
       icon: 'warning',
       message: error.response?.data?.message,
     });
+  } finally {
+    isSubmit.disable = false;
   }
 }
 

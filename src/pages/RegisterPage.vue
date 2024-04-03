@@ -43,13 +43,19 @@
         />
 
         <div class="flex items-center justify-around">
-          <q-btn label="Регистрация" type="submit" color="primary" />
+          <q-btn
+            label="Регистрация"
+            type="submit"
+            color="primary"
+            :disable="isSubmit.disable"
+          />
           <q-btn
             label="Сбросить"
             type="reset"
             color="primary"
             flat
             class="q-ml-sm"
+            :disable="isSubmit.disable"
           />
         </div>
       </q-form>
@@ -58,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { useQuasar } from 'quasar';
 
 import CardForm from 'components/CardForm.vue';
@@ -66,6 +72,7 @@ import { authApi } from '../boot/authApi';
 import { validateEmail } from '../utils/validate';
 
 const $q = useQuasar();
+const isSubmit = reactive({ disable: false });
 
 const username = ref(null);
 const email = ref(null);
@@ -81,6 +88,7 @@ async function onSubmit() {
     });
   } else {
     try {
+      isSubmit.disable = true;
       await authApi.register({
         username: username.value,
         email: email.value,
@@ -105,6 +113,8 @@ async function onSubmit() {
         icon: 'warning',
         message: error.response?.data?.message,
       });
+    } finally {
+      isSubmit.disable = false;
     }
   }
 }

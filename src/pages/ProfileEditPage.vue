@@ -22,13 +22,19 @@
         <q-input filled v-model="aboutMe" label="Информация обо мне" autogrow />
 
         <div class="flex items-center justify-around">
-          <q-btn label="Сохранить изменения" type="submit" color="primary" />
+          <q-btn
+            label="Сохранить изменения"
+            type="submit"
+            color="primary"
+            :disable="isSubmit.disable"
+          />
           <q-btn
             label="Сбросить"
             type="reset"
             color="primary"
             flat
             class="q-ml-sm"
+            :disable="isSubmit.disable"
           />
         </div>
 
@@ -41,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { useQuasar } from 'quasar';
 
 import { useAuthStore } from '../stores/auth';
@@ -49,6 +55,7 @@ import profileApi from '../boot/profileApi';
 
 const $q = useQuasar();
 const authStore = useAuthStore();
+const isSubmit = reactive({ disable: false });
 
 const name = ref(authStore.userProfile?.name);
 const tel = ref(authStore.userProfile?.tel);
@@ -65,6 +72,7 @@ async function onSubmit() {
     });
     return;
   }
+  isSubmit.disable = true;
 
   try {
     const payload = {
@@ -86,13 +94,23 @@ async function onSubmit() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error('Ошибка при обновлении профиля', error);
+    let errorMsg = '';
 
+    switch (error.code) {
+      case 'ERR_CANCELED':
+        errorMsg = 'Запрос отменен';
+        break;
+      default:
+        break;
+    }
     $q.notify({
       color: 'red-5',
       textColor: 'white',
       icon: 'warning',
-      message: error.response?.data?.message,
+      message: errorMsg,
     });
+  } finally {
+    isSubmit.disable = false;
   }
 }
 

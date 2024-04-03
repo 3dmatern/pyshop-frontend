@@ -20,6 +20,8 @@ declare module '@vue/runtime-core' {
 // "export default () => {}" function below (which runs individually
 // for each client)
 const api = axios.create({ baseURL: appConfig.API_ENDPOINT });
+
+let abortController: AbortController | null = null;
 let isRefreshingToken = false;
 
 export default boot(({ app }) => {
@@ -36,6 +38,10 @@ export default boot(({ app }) => {
 
 api.interceptors.request.use(
   async (config) => {
+    if (abortController) {
+      abortController.abort();
+    }
+
     const accessToken = localStorageApi.getAccessToken();
     const expiresToken = localStorageApi.getTokenExpiresToken();
     const userId = localStorageApi.getUserData()?.id;
@@ -82,6 +88,9 @@ api.interceptors.request.use(
         }
       }
     }
+
+    abortController = new AbortController();
+    config.signal = abortController.signal;
 
     return config;
   },
