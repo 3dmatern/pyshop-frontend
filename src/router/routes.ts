@@ -18,6 +18,8 @@ const routes: RouteRecordRaw[] = [
           if (authStore.currentUser) {
             next(from.path);
           }
+
+          next();
         },
         component: () => import('pages/RegisterPage.vue'),
       },
@@ -29,6 +31,8 @@ const routes: RouteRecordRaw[] = [
           if (authStore.currentUser) {
             next(from.path);
           }
+
+          next();
         },
         component: () => import('pages/LoginPage.vue'),
       },
@@ -42,6 +46,7 @@ const routes: RouteRecordRaw[] = [
             localStorageApi.removeTokens();
             authStore.clearCurrentUser();
           }
+
           next('/');
         },
       },
