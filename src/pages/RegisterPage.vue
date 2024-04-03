@@ -9,7 +9,7 @@
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
         <q-input
           filled
-          v-model="username"
+          v-model.trim="username"
           label="Имя"
           lazy-rules
           :rules="[
@@ -20,7 +20,7 @@
         <q-input
           filled
           type="email"
-          v-model="email"
+          v-model.trim="email"
           label="Email"
           lazy-rules
           :rules="[
@@ -33,7 +33,7 @@
         <q-input
           filled
           type="password"
-          v-model="password"
+          v-model.trim="password"
           label="Пароль"
           lazy-rules
           :rules="[

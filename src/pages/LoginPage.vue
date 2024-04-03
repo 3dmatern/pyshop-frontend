@@ -10,7 +10,7 @@
         <q-input
           filled
           type="email"
-          v-model="email"
+          v-model.trim="email"
           label="Email"
           lazy-rules
           :rules="[
@@ -23,7 +23,7 @@
         <q-input
           filled
           type="password"
-          v-model="password"
+          v-model.trim="password"
           label="Пароль"
           lazy-rules
           :rules="[

@@ -6,7 +6,7 @@
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
         <q-input
           filled
-          v-model="name"
+          v-model.trim="name"
           label="Имя"
           lazy-rules
           :rules="[
@@ -15,11 +15,16 @@
         ]"
         />
 
-        <q-input filled type="tel" v-model="tel" label="Телефон" />
+        <q-input filled type="tel" v-model.trim="tel" label="Телефон" />
 
-        <q-input filled v-model="address" label="Адрес" />
+        <q-input filled v-model.trim="address" label="Адрес" />
 
-        <q-input filled v-model="aboutMe" label="Информация обо мне" autogrow />
+        <q-input
+          filled
+          v-model.trim="aboutMe"
+          label="Информация обо мне"
+          autogrow
+        />
 
         <div class="flex items-center justify-around">
           <q-btn
