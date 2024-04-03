@@ -1,7 +1,6 @@
 import { boot } from 'quasar/wrappers';
 import axios, { AxiosInstance } from 'axios';
 
-import appConfig from '../../config.json';
 import localStorageApi from './localStorageApi';
 
 declare module '@vue/runtime-core' {
@@ -17,7 +16,8 @@ declare module '@vue/runtime-core' {
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: appConfig.API_ENDPOINT });
+
+const api = axios.create({ baseURL: process.env.API_ENDPOINT });
 
 let abortController: AbortController | null = null;
 
