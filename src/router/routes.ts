@@ -15,6 +15,19 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/RegisterPage.vue'),
       },
       { path: 'login', component: () => import('pages/LoginPage.vue') },
+      {
+        path: 'logout',
+        component: () => null,
+        beforeEnter: (to, from, next) => {
+          const authStore = useAuthStore();
+
+          if (authStore.currentUser) {
+            localStorageApi.removeTokens();
+            authStore.clearCurrentUser();
+          }
+          next('/');
+        },
+      },
     ],
   },
   {

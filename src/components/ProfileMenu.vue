@@ -16,7 +16,7 @@
         </q-item>
         <q-item clickable v-close-popup>
           <q-item-section
-            ><router-link to="/">Выход</router-link></q-item-section
+            ><router-link to="/logout">Выход</router-link></q-item-section
           >
         </q-item>
       </q-list>
