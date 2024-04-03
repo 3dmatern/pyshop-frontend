@@ -75,6 +75,7 @@ async function onSubmit() {
     };
     const data = await profileApi.updateProfile(payload);
 
+    authStore.setCurrentUserName(data.name);
     authStore.setUserProfile(data);
     $q.notify({
       color: 'green-4',

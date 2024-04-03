@@ -1,7 +1,11 @@
 import { defineStore } from 'pinia';
 
 import { UserProfile } from 'src/main-types';
-import { getAccessToken, getUserData } from 'src/boot/localStorageApi';
+import {
+  getAccessToken,
+  getUserData,
+  setUsername,
+} from 'src/boot/localStorageApi';
 
 interface User {
   id: string;
@@ -23,6 +27,12 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     setCurrentUser(user: User) {
       this.currentUser = user;
+    },
+    setCurrentUserName(username: string) {
+      setUsername(username);
+      this.currentUser = this.currentUser
+        ? { ...this.currentUser, username }
+        : this.currentUser;
     },
     setUserProfile(profile: UserProfile) {
       this.userProfile = profile;
