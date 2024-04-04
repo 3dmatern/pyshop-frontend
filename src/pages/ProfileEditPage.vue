@@ -1,6 +1,6 @@
 <template>
   <q-page class="column flex-center justify-center">
-    <p class="text-h3">Редактирование профиля</p>
+    <p class="subHeader">Редактирование профиля</p>
 
     <div class="q-pa-md" style="max-width: 400px; width: 100%">
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">

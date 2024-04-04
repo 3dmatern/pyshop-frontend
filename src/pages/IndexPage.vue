@@ -1,7 +1,7 @@
 <template>
   <q-page class="column items-center justify-center">
-    <h1 class="text-h2">JWT аутентификация</h1>
-    <h2 class="text-h3">CRUD операции с пользователем</h2>
+    <h1 class="header">JWT аутентификация</h1>
+    <h2 class="subHeader">CRUD операции с пользователем</h2>
 
     <div>
       <p class="text-weight-bolder">Стек технологий:</p>

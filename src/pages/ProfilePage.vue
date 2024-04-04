@@ -1,6 +1,6 @@
 <template>
   <q-page class="column flex-center" style="max-width: 400px; margin: 0 auto">
-    <p class="text-h2">Мой профиль</p>
+    <p class="subHeader">Мой профиль</p>
 
     <div class="q-pa-md" style="width: 100%">
       <div
