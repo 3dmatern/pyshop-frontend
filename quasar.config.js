@@ -54,7 +54,7 @@ module.exports = configure(function (/* ctx */) {
       // publicPath: '/',
       // analyze: true,
       env: {
-        API_ENDPOINT: 'http://dmatern.ru/api/',
+        API_ENDPOINT: 'https://dmatern.ru/api/',
       },
       // rawDefine: {}
       // ignorePublicFolder: true,
